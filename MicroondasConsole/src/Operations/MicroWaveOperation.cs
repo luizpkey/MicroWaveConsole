@@ -95,7 +95,7 @@ namespace MicroWave.Operations
             //                (++invokeCount).ToString());
 
             _secTimer -= 1_000;
-            sbMessage.Append("Time left: ");
+            sbMessage.Append("Tempo restante :");
             sbMessage.Append(GetTimer());
             Console.WriteLine( sbMessage.ToString());
             
@@ -110,7 +110,7 @@ namespace MicroWave.Operations
             {
                 // Reset the counter and signal the waiting thread.
                 //                invokeCount = 0;
-                Console.WriteLine("warm up completed");
+                Console.WriteLine("Aquecimento concluído");
                 _timer.Dispose();
                 autoEvent.Set();
             }

@@ -18,7 +18,7 @@ namespace MicroWave.Operations
 
         private int _power = 10;
 
-        private string _message = "Running";
+        private string _message = "Esquentando";
         public Routines() {
             ResetLightPainel();
         }
@@ -127,8 +127,8 @@ namespace MicroWave.Operations
             {
                 _power = 10;
                 ResetLightPainel();
-                _microOperation = new MicroWaveOperation(0, _power, "Waiting");
-                _message = "Running";
+                _microOperation = new MicroWaveOperation(0, _power, "Aguardando");
+                _message = "Esquentando";
                 _programDefined = false;
                 _microOperation = new MicroWaveOperation();
             }
@@ -172,7 +172,7 @@ namespace MicroWave.Operations
             {
                 if (timer % 100 >= 60 )
                 {
-                    throw new TimerException("Wrong timer, seconds exceeds 59!");
+                    throw new TimerException("Tempo informado invalido, verifique os segundos");
                 }
                 timer = timer / 100 * 60 + timer % 100;
 
@@ -180,7 +180,7 @@ namespace MicroWave.Operations
             
             if (!_programDefined && ( timer < 1 || timer > 120))
             {
-                throw new TimerException("Wrong timer, enter with range between 1 second to 2 minutes!");
+                throw new TimerException("Tempo informado invalido, entre com valores entre 1 segundo e 2 minutos!");
             }
             return timer;
         }

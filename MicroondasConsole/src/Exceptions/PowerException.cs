@@ -7,7 +7,7 @@ namespace MicroWave.Exceptions
         public PowerException() { }
         public override string ToString()
         {
-            return "Range for power should be 1 to 10";
+            return "Potência deve ser definida entre 1 e 10";
         }
     }
 }
