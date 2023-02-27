@@ -14,7 +14,10 @@ namespace MicroWave.Operations
         public MicroWaveOperation() { }
         public MicroWaveOperation(int secTimer, int power, string messageProcess) 
         {
-            _secTimer = secTimer;
+            _secTimer = secTimer*1_000;
+            Console.WriteLine(_secTimer);
+            Console.WriteLine(secTimer);
+            Console.WriteLine(GetTimer());
             _power = power;
             _messageProcess = messageProcess;
             
@@ -23,6 +26,10 @@ namespace MicroWave.Operations
         public void SetTimer(int secTimer) 
         {
             _secTimer = secTimer; 
+        }
+        public int GetSecondTimer()
+        {
+            return _secTimer;
         }
         public string GetTimer() {
             TimeSpan ts = TimeSpan.FromTicks(_secTimer * 10_000);
@@ -74,7 +81,7 @@ namespace MicroWave.Operations
         public void AddTimer(int timer) 
         {
             _timer.Dispose();
-            _secTimer += timer;
+            _secTimer += timer * 1_000;
             Run();
         }
 
@@ -88,7 +95,7 @@ namespace MicroWave.Operations
             //                (++invokeCount).ToString());
 
             _secTimer -= 1_000;
-            sbMessage.Append("Tempo restante: ");
+            sbMessage.Append("Time left: ");
             sbMessage.Append(GetTimer());
             Console.WriteLine( sbMessage.ToString());
             

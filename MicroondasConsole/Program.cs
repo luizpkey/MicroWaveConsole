@@ -4,6 +4,7 @@ using MicroWaveConsole.Keys;
 using MicroWave.Operations;
 
 Routines runner = new Routines();
+MicroWaveOperation microOperation = null;
 
 ConsoleKeyInfo keypress;
 
@@ -18,6 +19,7 @@ do
         case ConsoleKey.Enter:
             {
                 runner.OkPress();
+
                 break;
             }
         case ConsoleKey.Escape:
@@ -88,6 +90,55 @@ do
         case ConsoleKey.OemPlus:
             {
                 runner.PowerPress();
+                break;
+            }
+        case ConsoleKey.F2:
+            {
+
+                microOperation = new MicroWaveOperation(180,
+                                                      7,
+                                                      "Observar o barulho de estouros do milho,\r\n"+
+                                                      "caso houver um intervalo de mais de 10 segundos entre\r\n"+
+                                                      "um estouro e outro, interrompa o aquecimento\r\n");
+                runner.setMicroOperation(microOperation);
+                break;
+            }
+        case ConsoleKey.F3:
+            {
+                microOperation = new MicroWaveOperation(300,
+                                                        5,
+                                                       "Cuidado com aquecimento de líquidos, o choque\r\n"+
+                                                       "térmico aliado ao movimento do recipiente\r\n"+
+                                                       "pode causar fervura imediata causando risco de queimaduras.");
+                runner.setMicroOperation(microOperation);
+                break;
+            }
+        case ConsoleKey.F4:
+            {
+                microOperation = new MicroWaveOperation(840,
+                                                        4,
+                                                        "Interrompa o processo na metade e vire o conteúdo com\r\n"+
+                                                        "a parte de baixo para cima para o descongelamento uniforme.");
+                runner.setMicroOperation(microOperation);
+                break;
+            }
+        case ConsoleKey.F5:
+            {
+                microOperation = new MicroWaveOperation(480,
+                                                        7,
+                                                        "Interrompa o processo na metade e vire o conteúdo com a parte\r\n"+
+                                                        "de baixo para cima para o descongelamento uniforme.");
+                runner.setMicroOperation(microOperation);
+                break;
+            }
+        case ConsoleKey.F6:
+            {
+                microOperation = new MicroWaveOperation(480,
+                                                        9,
+                                                        "Deixe o recipiente destampado e em casos de plástico, cuidado\r\n"+
+                                                        "ao retirar o recipiente pois o mesmo pode perder resistência\r\n"+
+                                                        "em altas temperaturas.");
+                runner.setMicroOperation(microOperation);
                 break;
             }
     }

@@ -16,7 +16,9 @@ namespace MicroWave.Operations
 
         private bool _programDefined = false;
 
-        private int Power = 10;
+        private int _power = 10;
+
+        private string _message = "Running";
         public Routines() {
             ResetLightPainel();
         }
@@ -44,22 +46,30 @@ namespace MicroWave.Operations
             }
         }
 
+        public void setMicroOperation( MicroWaveOperation microOperation)
+        {
+            RefreshLightPainel(microOperation);
+            _power = microOperation.GetPower();
+            _microOperation = microOperation;
+            _programDefined = true;
+        }
         public void OkPress()
         {
-            StringBuilder sbTime = new StringBuilder();
-            for (int i = 0; i < _lightPainel.Count; i++)
+            if (_programDefined)
             {
-                sbTime.Append(_lightPainel[i].ToString());
+                OkPress(_microOperation);
+            }else
+            {
+                StringBuilder sbTime = new StringBuilder();
+                for (int i = 0; i < _lightPainel.Count; i++)
+                {
+                    sbTime.Append(_lightPainel[i].ToString());
+                }
+                OkPress(sbTime.ToString(), _power);
             }
-            OkPress(sbTime.ToString(), Power, false);
-        }
-        public void OkPress(MicroWaveOperation microOperation)
-        {
-
-            OkPress(microOperation.GetTimer(), microOperation.GetPower(), true);
         }
 
-        public void OkPress(string time, int power, bool programDefined)
+        public void OkPress(string time, int power)
         {
             if (_statusDevice.Equals(Status.wait))
             {
@@ -70,16 +80,14 @@ namespace MicroWave.Operations
                     int timer = 0;
                     if (int.Parse(time) == 0)
                     {
-                        if (!_programDefined)
-                           timer += 30;
+                        timer += 30;
                     }else
                     {
                         timer = TimerConverter(time);
 
                     }
-                    timer *= 1_000;
 
-                    _microOperation = new MicroWaveOperation(timer, power, "Running");
+                    _microOperation = new MicroWaveOperation(timer, power, _message);
                     _statusDevice = Status.running;
                     _microOperation.Run();
                 }
@@ -90,25 +98,39 @@ namespace MicroWave.Operations
             }
             else
             {
-                _microOperation.AddTimer(30 * 1_000);
+                _microOperation.AddTimer(30);
                 _microOperation.Run();
             }
-            RefreshLightPainel();
+            RefreshLightPainel(_microOperation);
         }
+
+        public void OkPress(MicroWaveOperation microOperation)
+        {
+            if (_statusDevice.Equals(Status.wait))
+            {
+                _statusDevice = Status.running;
+                microOperation.Run();
+                RefreshLightPainel(microOperation);
+            }
+        }
+
 
         public void CancelPress()
         {
             if (_statusDevice.Equals(Status.running))
             {
                 _microOperation.Cancel();
-                RefreshLightPainel();
+                RefreshLightPainel(_microOperation);
                 _statusDevice = Status.wait;
             }
             else
             {
-                Power = 10;
+                _power = 10;
                 ResetLightPainel();
-                _microOperation = new MicroWaveOperation(0, Power, "Waiting");
+                _microOperation = new MicroWaveOperation(0, _power, "Waiting");
+                _message = "Running";
+                _programDefined = false;
+                _microOperation = new MicroWaveOperation();
             }
         }
 
@@ -117,7 +139,7 @@ namespace MicroWave.Operations
             if (_statusDevice.Equals(Status.wait))
             {
                 // validar tempo e potencia
-                int power = Power;
+                int power = _power;
                 try
                 {
                     StringBuilder sbPower = new StringBuilder(); ;
@@ -125,29 +147,21 @@ namespace MicroWave.Operations
                     {
                         sbPower.Append(_lightPainel[i]);
                     }
-                    Power=PowerConverter(sbPower.ToString());
+                    _power =PowerConverter(sbPower.ToString());
                     ResetLightPainel();
                 }
                 catch (PowerException e)
                 {
-                    Power = power;
+                    _power = power;
                     Console.WriteLine(e.ToString());
                     Console.ReadKey();
                 }
 
-                if (Power.Equals(0))
+                if (_power.Equals(0))
                 {
-                    Power = 10;
+                    _power = 10;
                 }
 
-            }
-        }
-
-        public void ProgramKeyPress(MicroWaveOperation microPeration)
-        {
-            if (_statusDevice.Equals(Status.wait))
-            {
-                OkPress(microPeration);
             }
         }
 
@@ -164,7 +178,7 @@ namespace MicroWave.Operations
 
             }
             
-            if (timer < 1 || timer > 120)
+            if (!_programDefined && ( timer < 1 || timer > 120))
             {
                 throw new TimerException("Wrong timer, enter with range between 1 second to 2 minutes!");
             }
@@ -181,10 +195,10 @@ namespace MicroWave.Operations
             return power;
         }
         
-        private void RefreshLightPainel()
+        private void RefreshLightPainel(MicroWaveOperation microOperation )
         {
             int i =0;
-            foreach (char c in _microOperation.GetTimer())
+            foreach (char c in microOperation.GetTimer())
             {
                 string expression = "^[0-9]";
                 if (Regex.IsMatch(c.ToString(), expression))
@@ -210,7 +224,7 @@ namespace MicroWave.Operations
             PainelDraw.Draw(
                  _lightPainel, 
                  _statusDevice.Equals(Status.wait)?"":_microOperation.GetMessageProcess(),
-                 'P' + Power.ToString());
+                 'P' + _power.ToString());
         }
     }
 }
