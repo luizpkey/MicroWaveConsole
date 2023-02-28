@@ -5,10 +5,10 @@ namespace MicroWaveConsole.Action
 {
     class PainelKeys:IAction
     {
-        protected string Title;
+        protected string _title;
         public PainelKeys( string title )
         {
-            this.Title = title;
+            this._title = title;
         }
 
         public MicroWaveKeys Call()
@@ -18,12 +18,12 @@ namespace MicroWaveConsole.Action
 
         public string GetTitle()
         {
-            return this.Title;
+            return this._title;
         }
 
         public override string ToString()
         {
-            return " " + this.Title + " ";
+            return " " + this._title + " ";
         }
     }
 }

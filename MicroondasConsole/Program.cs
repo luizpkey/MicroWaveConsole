@@ -3,8 +3,8 @@ using MicroWaveConsole;
 using MicroWaveConsole.Keys;
 using MicroWave.Operations;
 
-Routines runner = new Routines();
-MicroWaveOperation microOperation = null;
+Routines runner = new();
+MicroWaveOperation microOperation;
 
 ConsoleKeyInfo keypress;
 
@@ -96,10 +96,11 @@ do
             {
 
                 microOperation = new MicroWaveOperation(180,
-                                                      7,
-                                                      "Observar o barulho de estouros do milho,\r\n"+
-                                                      "caso houver um intervalo de mais de 10 segundos entre\r\n"+
-                                                      "um estouro e outro, interrompa o aquecimento\r\n");
+                                                        7,
+                                                        "Observar o barulho de estouros do milho,\r\n"+
+                                                        "caso houver um intervalo de mais de 10 segundos entre\r\n"+
+                                                        "um estouro e outro, interrompa o aquecimento\r\n",
+                                                        '@');
                 runner.setMicroOperation(microOperation);
                 break;
             }
@@ -109,7 +110,8 @@ do
                                                         5,
                                                        "Cuidado com aquecimento de líquidos, o choque\r\n"+
                                                        "térmico aliado ao movimento do recipiente\r\n"+
-                                                       "pode causar fervura imediata causando risco de queimaduras.");
+                                                       "pode causar fervura imediata causando risco de queimaduras.",
+                                                       '|');
                 runner.setMicroOperation(microOperation);
                 break;
             }
@@ -118,7 +120,8 @@ do
                 microOperation = new MicroWaveOperation(840,
                                                         4,
                                                         "Interrompa o processo na metade e vire o conteúdo com\r\n"+
-                                                        "a parte de baixo para cima para o descongelamento uniforme.");
+                                                        "a parte de baixo para cima para o descongelamento uniforme.",
+                                                        '>');
                 runner.setMicroOperation(microOperation);
                 break;
             }
@@ -127,7 +130,8 @@ do
                 microOperation = new MicroWaveOperation(480,
                                                         7,
                                                         "Interrompa o processo na metade e vire o conteúdo com a parte\r\n"+
-                                                        "de baixo para cima para o descongelamento uniforme.");
+                                                        "de baixo para cima para o descongelamento uniforme.",
+                                                        '<');
                 runner.setMicroOperation(microOperation);
                 break;
             }
@@ -137,7 +141,8 @@ do
                                                         9,
                                                         "Deixe o recipiente destampado e em casos de plástico, cuidado\r\n"+
                                                         "ao retirar o recipiente pois o mesmo pode perder resistência\r\n"+
-                                                        "em altas temperaturas.");
+                                                        "em altas temperaturas.",
+                                                        '*');
                 runner.setMicroOperation(microOperation);
                 break;
             }

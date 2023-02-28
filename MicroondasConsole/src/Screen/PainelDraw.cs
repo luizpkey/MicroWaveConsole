@@ -82,5 +82,15 @@ namespace MicroWaveConsole.Device
             listButton.Add(new ButtonKey(" ".PadLeft(6), MicroWaveKeys.Cancel));
             return listButton;
         }
+        public static void Messager(string text)
+        {
+            Console.WriteLine(text);
+        }
+        public static void Alert(string text)
+        {
+            Console.WriteLine(text);
+            Console.ReadKey();
+        }
+
+        }
     }
-}

@@ -1,27 +1,23 @@
-﻿using System;
-using System.Globalization;
-using System.Text;
+﻿using System.Text;
+using MicroWaveConsole.Device;
 
 namespace MicroWave.Operations
 {
     internal class MicroWaveOperation
     {
-        private Timer _timer = null;
+        private Timer? _timer = null;
         private int _secTimer = 0; // Em segundos
         private int _power = 0;
+        private readonly char _processFeedback;
         private string _messageProcess="";
         private StringBuilder _messageBuffer = new StringBuilder();
         public MicroWaveOperation() { }
-        public MicroWaveOperation(int secTimer, int power, string messageProcess) 
+        public MicroWaveOperation(int secTimer, int power, string messageProcess, char? processFeedback) 
         {
             _secTimer = secTimer*1_000;
-            Console.WriteLine(_secTimer);
-            Console.WriteLine(secTimer);
-            Console.WriteLine(GetTimer());
             _power = power;
             _messageProcess = messageProcess;
-            
-
+            _processFeedback = (char)((processFeedback!=null)?processFeedback:'.');
         }
         public void SetTimer(int secTimer) 
         {
@@ -31,6 +27,7 @@ namespace MicroWave.Operations
         {
             return _secTimer;
         }
+
         public string GetTimer() {
             TimeSpan ts = TimeSpan.FromTicks(_secTimer * 10_000);
             return string.Format("{0}:{1}",
@@ -76,11 +73,17 @@ namespace MicroWave.Operations
 
         public void Cancel()
         {
-            _timer.Dispose();
+            if (_timer != null)
+            {
+                _timer.Dispose();
+            }
         }
         public void AddTimer(int timer) 
         {
-            _timer.Dispose();
+            if (_timer != null)
+            {
+                _timer.Dispose();
+            }
             _secTimer += timer * 1_000;
             Run();
         }
@@ -89,29 +92,29 @@ namespace MicroWave.Operations
         public void CheckStatus(Object stateInfo)
         {
             StringBuilder sbMessage = new StringBuilder();
-            AutoResetEvent autoEvent = (AutoResetEvent)stateInfo;
-            //            Console.WriteLine("{0} Checking status {1,2}.",
-            //                DateTime.Now.ToString("h:mm:ss.fff"),
-            //                (++invokeCount).ToString());
+            AutoResetEvent autoEvent= (AutoResetEvent)stateInfo;
 
             _secTimer -= 1_000;
             sbMessage.Append("Tempo restante :");
             sbMessage.Append(GetTimer());
-            Console.WriteLine( sbMessage.ToString());
+            PainelDraw.Messager(sbMessage.ToString());
             
             for (int i = 0; i < _power; i++)
             {
-                _messageBuffer.Append('.');
+                _messageBuffer.Append(_processFeedback);
             }
 
-            Console.WriteLine(_messageBuffer.ToString());
+            PainelDraw.Messager(_messageBuffer.ToString());
 
             if (_secTimer <= 0)
             {
                 // Reset the counter and signal the waiting thread.
                 //                invokeCount = 0;
-                Console.WriteLine("Aquecimento concluído");
-                _timer.Dispose();
+                PainelDraw.Messager("Aquecimento concluído");
+                if (_timer != null)
+                {
+                    _timer.Dispose();
+                }
                 autoEvent.Set();
             }
 

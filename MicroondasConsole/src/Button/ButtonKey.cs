@@ -1,31 +1,29 @@
-﻿using System;
-using MicroWaveConsole.Action;
-using MicroWaveConsole.Keys;
+﻿using MicroWaveConsole.Keys;
 
 namespace MicroWaveConsole.Action
 {
     class ButtonKey : IAction
     {
-        protected string Title;
-        protected MicroWaveKeys KeyBinding; 
+        protected string _title;
+        protected MicroWaveKeys _keyBinding; 
         public ButtonKey( string title, MicroWaveKeys key )
         {
-            this.Title = title;
-            this.KeyBinding = key;
+            this._title = title;
+            this._keyBinding = key;
         }
         public MicroWaveKeys Call()
         {
-            return this.KeyBinding;
+            return this._keyBinding;
         }
 
         public string GetTitle()
         {
-            return this.Title;
+            return this._title;
         }
 
         public override string ToString()
         {
-            return " " + this.Title + " ";
+            return " " + this._title + " ";
         }
     }
 }

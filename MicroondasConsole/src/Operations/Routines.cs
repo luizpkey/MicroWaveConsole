@@ -10,7 +10,7 @@ namespace MicroWave.Operations
     {
         private List<string> _lightPainel = new List<string>{ "0", "0", "0", "0" };
 
-        private Status _statusDevice = Status.wait;
+        private Status _statusDevice = Status.Wait;
 
         private MicroWaveOperation _microOperation = new MicroWaveOperation();
 
@@ -24,7 +24,7 @@ namespace MicroWave.Operations
         }
         public void NumpadKeyPress(MicroWaveKeys digits)
         {
-            if (_statusDevice.Equals(Status.wait))
+            if (_statusDevice.Equals(Status.Wait))
             {
                 // Aqui tem que mover o painel ex: 0000 se precionar o 7 ficará 0007
                 switch (digits)
@@ -71,7 +71,7 @@ namespace MicroWave.Operations
 
         public void OkPress(string time, int power)
         {
-            if (_statusDevice.Equals(Status.wait))
+            if (_statusDevice.Equals(Status.Wait))
             {
                 try
                 {
@@ -87,13 +87,13 @@ namespace MicroWave.Operations
 
                     }
 
-                    _microOperation = new MicroWaveOperation(timer, power, _message);
-                    _statusDevice = Status.running;
+                    _microOperation = new MicroWaveOperation(timer, power, _message, '.');
+                    _statusDevice = Status.Running;
                     _microOperation.Run();
                 }
                 catch (TimerException e)
                 {
-                    Console.WriteLine(e.ToString());
+                    PainelDraw.Alert(e.ToString());
                 }
             }
             else
@@ -106,9 +106,9 @@ namespace MicroWave.Operations
 
         public void OkPress(MicroWaveOperation microOperation)
         {
-            if (_statusDevice.Equals(Status.wait))
+            if (_statusDevice.Equals(Status.Wait))
             {
-                _statusDevice = Status.running;
+                _statusDevice = Status.Running;
                 microOperation.Run();
                 RefreshLightPainel(microOperation);
             }
@@ -117,17 +117,17 @@ namespace MicroWave.Operations
 
         public void CancelPress()
         {
-            if (_statusDevice.Equals(Status.running))
+            if (_statusDevice.Equals(Status.Running))
             {
                 _microOperation.Cancel();
                 RefreshLightPainel(_microOperation);
-                _statusDevice = Status.wait;
+                _statusDevice = Status.Wait;
             }
             else
             {
                 _power = 10;
                 ResetLightPainel();
-                _microOperation = new MicroWaveOperation(0, _power, "Aguardando");
+                _microOperation = new MicroWaveOperation(0, _power, "Aguardando", null);
                 _message = "Esquentando";
                 _programDefined = false;
                 _microOperation = new MicroWaveOperation();
@@ -136,7 +136,7 @@ namespace MicroWave.Operations
 
         public void PowerPress()
         {
-            if (_statusDevice.Equals(Status.wait))
+            if (_statusDevice.Equals(Status.Wait))
             {
                 // validar tempo e potencia
                 int power = _power;
@@ -153,8 +153,7 @@ namespace MicroWave.Operations
                 catch (PowerException e)
                 {
                     _power = power;
-                    Console.WriteLine(e.ToString());
-                    Console.ReadKey();
+                    PainelDraw.Alert(e.ToString());
                 }
 
                 if (_power.Equals(0))
@@ -187,7 +186,7 @@ namespace MicroWave.Operations
         private int PowerConverter(string sendPow)
         {
             int power = int.Parse(sendPow);
-            Console.WriteLine(power);
+
             if (power > 10 || power <= 0)
             {
                 throw new PowerException();
@@ -223,7 +222,7 @@ namespace MicroWave.Operations
         {
             PainelDraw.Draw(
                  _lightPainel, 
-                 _statusDevice.Equals(Status.wait)?"":_microOperation.GetMessageProcess(),
+                 _statusDevice.Equals(Status.Wait)?"":_microOperation.GetMessageProcess(),
                  'P' + _power.ToString());
         }
     }
