@@ -8,11 +8,11 @@ namespace MicroWave.Operations
 {
     internal class Routines
     {
-        private List<string> _lightPainel = new List<string>{ "0", "0", "0", "0" };
+        private readonly List<string> _lightPainel = new() { "0", "0", "0", "0" };
 
         private Status _statusDevice = Status.Wait;
 
-        private MicroWaveOperation _microOperation = new MicroWaveOperation();
+        private MicroWaveOperation _microOperation = new();
 
         private bool _programDefined = false;
 
@@ -46,7 +46,7 @@ namespace MicroWave.Operations
             }
         }
 
-        public void setMicroOperation( MicroWaveOperation microOperation)
+        public void SetMicroOperation( MicroWaveOperation microOperation)
         {
             RefreshLightPainel(microOperation);
             _power = microOperation.GetPower();
@@ -60,10 +60,10 @@ namespace MicroWave.Operations
                 OkPress(_microOperation);
             }else
             {
-                StringBuilder sbTime = new StringBuilder();
+                StringBuilder sbTime = new();
                 for (int i = 0; i < _lightPainel.Count; i++)
                 {
-                    sbTime.Append(_lightPainel[i].ToString());
+                    sbTime.Append(_lightPainel[i]);
                 }
                 OkPress(sbTime.ToString(), _power);
             }
@@ -142,7 +142,7 @@ namespace MicroWave.Operations
                 int power = _power;
                 try
                 {
-                    StringBuilder sbPower = new StringBuilder(); ;
+                    StringBuilder sbPower = new(); ;
                     for (int i = 0; i < 4; i++)
                     {
                         sbPower.Append(_lightPainel[i]);
@@ -183,7 +183,7 @@ namespace MicroWave.Operations
             }
             return timer;
         }
-        private int PowerConverter(string sendPow)
+        static private int PowerConverter(string sendPow)
         {
             int power = int.Parse(sendPow);
 

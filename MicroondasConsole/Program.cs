@@ -101,7 +101,7 @@ do
                                                         "caso houver um intervalo de mais de 10 segundos entre\r\n"+
                                                         "um estouro e outro, interrompa o aquecimento\r\n",
                                                         '@');
-                runner.setMicroOperation(microOperation);
+                runner.SetMicroOperation(microOperation);
                 break;
             }
         case ConsoleKey.F3:
@@ -112,7 +112,7 @@ do
                                                        "térmico aliado ao movimento do recipiente\r\n"+
                                                        "pode causar fervura imediata causando risco de queimaduras.",
                                                        '|');
-                runner.setMicroOperation(microOperation);
+                runner.SetMicroOperation(microOperation);
                 break;
             }
         case ConsoleKey.F4:
@@ -122,7 +122,7 @@ do
                                                         "Interrompa o processo na metade e vire o conteúdo com\r\n"+
                                                         "a parte de baixo para cima para o descongelamento uniforme.",
                                                         '>');
-                runner.setMicroOperation(microOperation);
+                runner.SetMicroOperation(microOperation);
                 break;
             }
         case ConsoleKey.F5:
@@ -132,7 +132,7 @@ do
                                                         "Interrompa o processo na metade e vire o conteúdo com a parte\r\n"+
                                                         "de baixo para cima para o descongelamento uniforme.",
                                                         '<');
-                runner.setMicroOperation(microOperation);
+                runner.SetMicroOperation(microOperation);
                 break;
             }
         case ConsoleKey.F6:
@@ -143,7 +143,7 @@ do
                                                         "ao retirar o recipiente pois o mesmo pode perder resistência\r\n"+
                                                         "em altas temperaturas.",
                                                         '*');
-                runner.setMicroOperation(microOperation);
+                runner.SetMicroOperation(microOperation);
                 break;
             }
     }
